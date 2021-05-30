@@ -1,0 +1,68 @@
+<!-- Sidebar  -->
+
+<nav id="sidebar">
+    <div class="sidebar-header">
+        <h3>財務預警</h3>
+    </div>
+
+    <ul class="list-unstyled components">
+        <li>
+            <a href="#Asset" class="sidebar-selct" data-toggle="collapse" aria-expanded="false">
+                <i style='font-size:20px' class="fas fa-money-check-alt"></i>
+                <span>
+                    資金活用度
+                </span></a>
+            <ul class="collapse list-unstyled" id="Asset">
+                <li>
+                    <a href="{{ url_for('liquidity') }}" id="liquidity">流動性</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('efficiency') }}" id="efficiency">效率性</a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#Sales" class="sidebar-selct" data-toggle="collapse" aria-expanded="false">
+                <i style='font-size:23px' class="fas fa-briefcase"></i>
+                <span>
+                    務業成長性
+                </span></a>
+            <ul class="collapse list-unstyled" id="Sales">
+                <li>
+                    <a href="{{ url_for('profitability') }}" id="profitability">獲利性</a>
+                </li>
+
+            </ul>
+        </li>
+
+        <li>
+            <a href="#Business" class="sidebar-selct" data-toggle="collapse" aria-expanded="false">
+                <i style='font-size:24px' class="fas fa-building"></i>
+                <span>
+                    經營穩定性
+                </span></a>
+            <ul class="collapse list-unstyled" id="Business">
+                <li>
+                    <a href="{{ url_for('safety') }}" id="safety">安全性</a>
+                </li>
+
+            </ul>
+        </li>
+
+        <li>
+            <a href="#Culture" class="sidebar-selct" data-toggle="collapse" aria-expanded="false">
+                <i style='font-size:20px' class="fas fa-street-view"></i>
+                <span>
+                    公司文化特性
+                </span></a>
+            <ul class="collapse list-unstyled" id="Culture">
+                <li>
+                    <a href="{{ url_for('related_party_transaction') }}" id="related_party_transaction">關係人交易</a>
+                </li>
+
+            </ul>
+        </li>
+    </ul>
+</nav>
+
