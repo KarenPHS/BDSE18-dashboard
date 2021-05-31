@@ -1,13 +1,13 @@
 {% extends "dashboard.html" %}
 
-{% set datasets=[data] %}
-{% set charts=[["chart1", "svg1"]] %}
+{% set data=["data0", "data1"] %}
+{% set charts=[["chart1", "svg1", "g1"], ["chart2", "svg2", "g2"]] %}
 
 {% block page_inner %}
 {% for chart in charts %}
 <!-- 開始增加圖 -->
 <div class="container">
-    <div class="mx-auto" id="{{ chart[0] }}">
+    <div class="mx-auto mt-5" id="{{ chart[0] }}">
     </div>
 </div>
 {% endfor %}
@@ -16,7 +16,7 @@
 {% block page_inner_js %}
 <!--  全域變數-->
 <script>
-    var data=[
+    var data0=[
 	{
 		"Time": "2017/05",
 		"BTC": 19.7,
@@ -55,7 +55,46 @@
 	}
 ]
 
-      var margin = { top: 50, right: 50, bottom: 30, left: 100 },
+var data1=[
+	{
+		"Time": "2017/05",
+		"BTC": 19.7,
+		"DOGE": 0,
+		"ETH": 28.88,
+		"LTC": 20.81,
+		"REP": 50,
+		"TEST": 10
+	},
+	{
+		"Time": "2017/06",
+		"BTC": 21.21,
+		"DOGE": 0,
+		"ETH": 10.45,
+		"LTC": 24.91,
+		"REP": 0,
+		"TEST": 15
+	},
+	{
+		"Time": "2017/07",
+		"BTC": 20.1,
+		"DOGE": 11.58,
+		"ETH": -10.73,
+		"LTC": 24.06,
+		"REP": 0,
+		"TEST": 26
+	},
+	{
+		"Time": "2017/08",
+		"BTC": 20.28,
+		"DOGE": 13.7,
+		"ETH": 42.78,
+		"LTC": 11,
+		"REP": 0,
+		"TEST": 33
+	}
+]
+
+      var margin = { top: 50, right: 100, bottom: 30, left: 40 },
       width = 960 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
@@ -113,18 +152,18 @@ var line = d3.svg.line()
       return y(d.worth);
     });
 
-color.domain(d3.keys(data[0]).filter(function (key) {
+color.domain(d3.keys({{ data[loop.index0] }}[0]).filter(function (key) {
         return key !== "Time" && key !== "_id";
-      }));
+      }));11
       // Correct the types
-      data.forEach(function (d) {
+      {{ data[loop.index0] }}.forEach(function (d) {
         d.date = parseTime(d.Time);
       });
 
 var currencies = color.domain().map(function (name) {
         return {
           name: name,
-          values: data.map(function (d) {
+          values: {{ data[loop.index0] }}.map(function (d) {
             return {
               date: d.date,
               worth: +d[name]
@@ -134,7 +173,7 @@ var currencies = color.domain().map(function (name) {
       });
 
     // Set the X domain
-    x.domain(d3.extent(data, function (d) {
+    x.domain(d3.extent({{ data[loop.index0] }}, function (d) {
       return d.date;
     }));
 
@@ -208,7 +247,11 @@ var currencies = color.domain().map(function (name) {
         return "translate(" + x(d.value.date) + "," + y(d.value.worth) + ")";
       })
       .attr("x", 3)
-      .attr("dy", ".35em");
+      .attr("dy", ".35em")
+      .text(function (d) {
+      return d.name;})
+      .style('font-size', '16px')
+;
 
     // Add the mouse line
     var mouseG = {{ chart[1] }}.append("g")
@@ -244,8 +287,9 @@ var currencies = color.domain().map(function (name) {
 
     // Append a rect to catch mouse movements on canvas
     mouseG.append('svg:rect')
-      .attr('width', width)
-      .attr('height', height)
+<!--      .attr('width', width)-->
+<!--      .attr('height', height)-->
+.attr("viewBox", "0 0 960 400")
       .attr('fill', 'none')
       .attr('pointer-events', 'all')
       .on('mouseout', function () { // on mouse out hide line, circles and text
@@ -279,18 +323,48 @@ var currencies = color.domain().map(function (name) {
 
             d3.select(".mouse-line")
               .attr("d", function () {
-                var data = "M" + x(d.values[idx].date) + "," + height;
-                data += " " + x(d.values[idx].date) + "," + 0;
-                return data;
+                var {{ data[loop.index0] }} = "M" + x(d.values[idx].date) + "," + height;
+                {{ data[loop.index0] }} += " " + x(d.values[idx].date) + "," + 0;
+                return {{ data[loop.index0] }};
               });
             return "translate(" + x(d.values[idx].date) + "," + y(d.values[idx].worth) + ")";
           });
       });
 
+        var move_x = 0.02
+        var move_y = 0.04
+
+
+        // 移動x軸
+        d3.select(".x.axis").selectAll(".tick text").attr("dx", width * move_x)
+        d3.select(".x.axis").selectAll(".tick line").attr("transform", "translate(" + (width * move_x) + ",0)")
+
+
+
+        // 移動y軸
+        d3.select(".y.axis").selectAll(".tick text").attr("dy", - (height * move_y))
+        d3.select(".y.axis").selectAll(".tick line").attr("transform", "translate(0," + -(height * move_y) + ")")
+
+        // 移動線跟點
+        d3.selectAll(".line").attr("transform", "translate(" + (width * move_x) + "," + -(height * move_y) + ")")
+        d3.selectAll("circle").attr("transform", "translate(" + (width * move_x) + "," + -(height * move_y) + ")")
+
+        // 移動動畫的線
+        d3.selectAll(".mouse-line").attr("transform", "translate(" + (width * move_x) + "," + -(height * move_y) + ")")
+
+        //移動動畫的字
+        d3.selectAll(".hover-text").attr("dx", width * move_x).attr("dy", - (height * move_y))
+
+
+
 
 </script>
 {% endfor %}
 {% endblock page_inner_js %}
+
+{% block script %}
+{{ super() }}
+{% endblock script %}
 
 
 

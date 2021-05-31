@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {% block head %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,12 +9,10 @@
     <script src="https://kit.fontawesome.com/ef1f19bda1.js" crossorigin="anonymous"></script>
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../static/css/_frame.css">
-    {% endblock head %}
 </head>
 
 <body>
 <div class="wrapper">
-    {% block body %}
     {% include "./builtin/_sidebar.html" %}
     <!-- Page Content  -->
     <div id="content">
@@ -157,12 +154,15 @@ $(document).ready(function() {
 });
 
 <!--Values from  navbar slct_stock use ajax to pass values-->
+console.log(slct_stock)
 $(function(){
-	$('#two_menu').click(function(){
+var stocks = {"slct_stock":slct_stock}
+	$('#for_send_stocks').click(function(){
 		$.ajax({
 			url: '/stocks',
-			data: slct_stock,
+			data: JSON.stringify(stocks),
 			type: 'POST',
+			contentType: "application/json",
 			success: function(response){
 				console.log(response);
 			},
@@ -173,30 +173,28 @@ $(function(){
 	});
 });
 
-$(function(){
-	$('#liquidity').click(function(){
-	var stocks = {slct_stock:slct_stock}
-		$.ajax({
-			url: '/stocks',
-			data: JSON.stringify(stocks),
-			type: 'POST',
-			contentType: "application/json",
-			success: function(response){
-                console.log(response)
-			},
-			error: function(error){
-				console.log(error);
-			}
-		});
-
-	});
-});
-
-
-
+<!--$(function(){-->
+<!--	$('#liquidity').click(function(){-->
+<!--	    var stocks = {"slct_stock":slct_stock, "type":"current_liab_current_assets"}-->
+<!--		$.ajax({-->
+<!--			url: '/stocks',-->
+<!--			data: JSON.stringify(stocks),-->
+<!--			type: 'POST',-->
+<!--			contentType: "application/json",-->
+<!--			success: function(response){-->
+<!--			    var parsed_data = JSON.parse(response);-->
+<!--			    alert(parsed_data.success)-->
+<!--&lt;!&ndash;                console.log(response)&ndash;&gt;-->
+<!--			},-->
+<!--			error: function(error){-->
+<!--				console.log(error);-->
+<!--			}-->
+<!--		});-->
+<!--&lt;!&ndash;        alert("hellow world")&ndash;&gt;-->
+<!--	});-->
+<!--});-->
     </script>
     <!-- Page Content  -->
-    {% endblock body %}
 <script type="text/javascript">
 $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {

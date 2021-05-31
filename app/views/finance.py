@@ -9,17 +9,17 @@ class views:
   def index(self,stocklist):
     return render_template('dashboard.html', stocklist=stocklist)
 
-  def liquidity(self):
-    return render_template('/Asset/liquidity.html')
+  def liquidity(self,stocklist):
+    return render_template('/Asset/liquidity.html', stocklist=stocklist)
 
-  def efficiency(self):
-    return render_template('/Asset/efficiency.html')
+  def efficiency(self,stocklist):
+    return render_template('/Asset/efficiency.html', stocklist=stocklist)
 
-  def profitability(self):
-    return render_template('/Sales/profitability.html')
+  def profitability(self,stocklist):
+    return render_template('/Sales/profitability.html', stocklist=stocklist)
 
-  def safety(self):
-    return render_template('/Business/safety.html')
+  def safety(self,stocklist):
+    return render_template('/Business/safety.html', stocklist=stocklist)
 
-  def related_party_transaction(self):
-    return render_template('/Culture/related_party_transaction.html')
+  def related_party_transaction(self,stocklist):
+    return render_template('/Culture/related_party_transaction.html', stocklist=stocklist)
