@@ -2,13 +2,13 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <title>財務預警系統</title>
     {% include "./builtin/_front.html" %}
-    <script src="https://kit.fontawesome.com/ef1f19bda1.js" crossorigin="anonymous"></script>
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/ef1f19bda1.js"></script>
     <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="../static/css/_frame.css">
+    <link href="../static/css/_frame.css" rel="stylesheet">
 </head>
 
 <body>
@@ -19,30 +19,30 @@
         <div id="accordion">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                    <button class="btn btn-info" id="sidebarCollapse" type="button">
                         <i class="fas fa-align-left"></i>
                         <span>縮小選單</span>
                     </button>
-                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" id="two_menu"
-                            data-toggle="collapse"
-                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
+                    <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+                            class="btn btn-dark d-inline-block d-lg-none ml-auto"
+                            data-target="#navbarSupportedContent" data-toggle="collapse"
+                            id="two_menu" type="button">
                         <i class="fas fa-align-justify"></i>
                     </button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a class="nav-link mt-1" id="fast_list" data-toggle="collapse"
-                                   data-target="#collapseFailCompany" data-parent="#accordion" aria-expanded="false"
-                                   aria-controls="collapseFailCompany">一鍵快篩</a>
+                                <a aria-controls="collapseFailCompany" aria-expanded="false" class="nav-link mt-1"
+                                   data-parent="#accordion" data-target="#collapseFailCompany" data-toggle="collapse"
+                                   id="fast_list">危機快篩</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link mt-1" id="all_list" data-toggle="collapse"
-                                   data-target="#collapseCompany"
-                                   href="#" aria-expanded="false" data-parent="#accordion"
-                                   aria-controls="collapseCompany">挑選公司</a>
+                                <a aria-controls="collapseCompany" aria-expanded="false" class="nav-link mt-1"
+                                   data-parent="#accordion"
+                                   data-target="#collapseCompany" data-toggle="collapse" href="#"
+                                   id="all_list">挑選正常</a>
                             </li>
                         </ul>
                     </div>
@@ -55,14 +55,30 @@
         <!--    公司清單-->
         <div class="container p-1" id="compamy_all_list">
             <!--一件快篩公司清單-->
-            <div class="collapse list-unstyled" data-parent="#compamy_all_list" id="collapseFailCompany"
-                 data-toggle="collapse">
-                <a>test</a>
+            {% set bankruptcy_temp=[] %}
+            <div class="collapse list-unstyled" data-parent="#compamy_all_list" data-toggle="collapse"
+                 id="collapseFailCompany">
+                <p class="mb-0"><strong>危機公司</strong></p>
+                {% for record in bankruptcy_stocklist %}
+                {% if record[0] not in bankruptcy_temp %}
+                <p class="p-navbar mb-0 pt-2">{{ record[0] }}</p>
+                {{ bankruptcy_temp.append(record[0]) or '' }}
+                {% endif %}
+                <div class="form-check flex-row form-check-inline b-0 ml-4 mr-0 pr-0 container-fluid"
+                     style="width:20%;">
+                    <input class="form-check-input" id="{{ record[1] }}" type="checkbox" value="{{ record[1] }}">
+                    <label class="form-check-label card-text flex-fill" for="{{ record[1] }}" name="bankruptcy_stocklist">{{
+                        record[1]
+                        }} {{ record[2] }}</label>
+                </div>
+                {% endfor %}
+
             </div>
             <!--挑選公司清單-->
             {% set temp=[] %}
-            <div class="collapse list-unstyled" data-parent="#fcompamy_all_list" id="collapseCompany"
-                 data-toggle="collapse">
+            <div class="collapse list-unstyled" data-parent="#fcompamy_all_list" data-toggle="collapse"
+                 id="collapseCompany">
+                <p class="mb-0"><strong>正常公司</strong></p>
                 {% for record in stocklist %}
                 {% if record[0] not in temp %}
                 <p class="p-navbar mb-0 pt-2">{{ record[0] }}</p>
@@ -70,8 +86,8 @@
                 {% endif %}
                 <div class="form-check flex-row form-check-inline b-0 ml-4 mr-0 pr-0 container-fluid"
                      style="width:20%;">
-                    <input class="form-check-input" type="checkbox" id="{{ record[1] }}" value="{{ record[1] }}">
-                    <label class="form-check-label card-text flex-fill" name="stocklist" for="{{ record[1] }}">{{
+                    <input class="form-check-input" id="{{ record[1] }}" type="checkbox" value="{{ record[1] }}">
+                    <label class="form-check-label card-text flex-fill" for="{{ record[1] }}" name="stocklist">{{
                         record[1]
                         }} {{ record[2] }}</label>
                 </div>
@@ -95,11 +111,6 @@
     });
   });
 
-<!--限制選取數量-- >
-$("input:checkbox").click(function() {
-  var bol = $("input:checkbox:checked").length >= 6;
-  $("input:checkbox").not(":checked").attr("disabled", bol);
-});
 
 <!--將選取的值變成button 在頁面上顯示，並擋住不同選單、相同選項的按鈕-- >
 var slct_stock = [];
@@ -131,6 +142,11 @@ $(document).ready(function() {
   });
 });
 
+<!--限制選取數量-- >
+$("input:checkbox").click(function() {
+  var bol = $("input:checkbox:checked").length >= 6;
+  $("input:checkbox").not(":checked").attr("disabled", bol);
+});
 
 <!--選單控制-- >
 $(document).ready(function() {
@@ -173,39 +189,17 @@ var stocks = {"slct_stock":slct_stock}
 	});
 });
 
-<!--$(function(){-->
-<!--	$('#liquidity').click(function(){-->
-<!--	    var stocks = {"slct_stock":slct_stock, "type":"current_liab_current_assets"}-->
-<!--		$.ajax({-->
-<!--			url: '/stocks',-->
-<!--			data: JSON.stringify(stocks),-->
-<!--			type: 'POST',-->
-<!--			contentType: "application/json",-->
-<!--			success: function(response){-->
-<!--			    var parsed_data = JSON.parse(response);-->
-<!--			    alert(parsed_data.success)-->
-<!--&lt;!&ndash;                console.log(response)&ndash;&gt;-->
-<!--			},-->
-<!--			error: function(error){-->
-<!--				console.log(error);-->
-<!--			}-->
-<!--		});-->
-<!--&lt;!&ndash;        alert("hellow world")&ndash;&gt;-->
-<!--	});-->
-<!--});-->
     </script>
     <!-- Page Content  -->
-<script type="text/javascript">
+    <script type="text/javascript">
 $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
             });
         });
-</script>
+    </script>
 
 </div>
-
-
 </body>
 
 </html>

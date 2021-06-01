@@ -1,12 +1,12 @@
 {% extends "dashboard.html" %}
 
-{% set charts=[["chart1", "svg1"]] %}
+{% set charts=[["chart1", "svg1", "g1"]] %}
 
 {% block page_inner %}
 {% for chart in charts %}
 <!-- 開始增加圖 -->
 <div class="container">
-    <div class="mx-auto" id="{{ chart[0] }}">
+    <div class="mx-auto mt-0" id="{{ chart[0] }}">
     </div>
 </div>
 {% endfor %}
@@ -15,49 +15,10 @@
 {% block page_inner_js %}
 <!--  全域變數-->
 <script>
-    var data=[
-	{
-		"Time": "2017/05",
-		"BTC": 19.7,
-		"DOGE": 0,
-		"ETH": 48.88,
-		"LTC": 20.81,
-		"REP": 0,
-		"TEST": 10
-	},
-	{
-		"Time": "2017/06",
-		"BTC": 21.21,
-		"DOGE": 0,
-		"ETH": 40.45,
-		"LTC": 24.91,
-		"REP": 0,
-		"TEST": 15
-	},
-	{
-		"Time": "2017/07",
-		"BTC": 20.1,
-		"DOGE": 11.58,
-		"ETH": 41.73,
-		"LTC": 24.06,
-		"REP": 0,
-		"TEST": 26
-	},
-	{
-		"Time": "2017/08",
-		"BTC": 20.28,
-		"DOGE": 12.37,
-		"ETH": 42.78,
-		"LTC": 25.91,
-		"REP": 0,
-		"TEST": 33
-	}
-]
-
-      var margin = { top: 50, right: 50, bottom: 30, left: 100 },
+      var margin = { top: 80, right: 100, bottom: 80, left: 60 },
       width = 960 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
-
+      var data={{ data|safe }}
 </script>
 
 <!-- 開始增加所需的 D3.js -->
@@ -74,9 +35,9 @@ var {{ chart[1] }}= d3.select("#" + "{{ chart[0] }}").append("svg")
     .attr('x', (width / 2))
     .attr('y', 0 - (margin.top / 3))
     .attr('text-anchor', 'middle')
-    .style('font-size', '16px')
-    .text('Wallet chart')
-    .attr("transform", "translate(0, -5)");
+    .style('font-size', '20px')
+    .text('流動負債佔流動資產比')
+    .attr("transform", "translate(0, -30)");
 
   // Function to convert a string into a time
   var parseTime = d3.time.format('%Y/%m').parse;
@@ -96,7 +57,7 @@ var {{ chart[1] }}= d3.select("#" + "{{ chart[0] }}").append("svg")
 var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom")
-    .ticks(6)
+    .ticks(13)
     .tickFormat(formatTime);
 
 var yAxis = d3.svg.axis()
@@ -114,7 +75,7 @@ var line = d3.svg.line()
 
 color.domain(d3.keys(data[0]).filter(function (key) {
         return key !== "Time" && key !== "_id";
-      }));
+      }));11
       // Correct the types
       data.forEach(function (d) {
         d.date = parseTime(d.Time);
@@ -155,7 +116,12 @@ var currencies = color.domain().map(function (name) {
     {{ chart[1] }}.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+      .call(xAxis)
+      .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-2em")
+      .attr("dy", "2em")
+      .attr("transform", function(d) {return "rotate(-50)"});
 
     // Set the Y axis
     {{ chart[1] }}.append("g")
@@ -164,9 +130,10 @@ var currencies = color.domain().map(function (name) {
       .append("text")
       .attr("transform", "translate(0,-25)")
       .attr("y", 6)
-      .attr("dy", ".71em")
+      .attr("dy", "-.5em")
+      .attr("dx", "6.3em")
       .style("text-anchor", "end")
-      .text("Val");
+      .text("(流動負債／流動資產)");
 
     // Draw the lines
     var company = {{ chart[1] }}.selectAll(".company")
@@ -181,7 +148,8 @@ var currencies = color.domain().map(function (name) {
       })
       .style("stroke", function (d) {
         return color(d.name);
-      });
+      })
+      .style("stroke-width", "2px");
 
       // Add the circles
     company.append("g").selectAll("circle")
@@ -207,7 +175,12 @@ var currencies = color.domain().map(function (name) {
         return "translate(" + x(d.value.date) + "," + y(d.value.worth) + ")";
       })
       .attr("x", 3)
-      .attr("dy", ".35em");
+      .attr("dx", "3.7em")
+      .attr("dy", "-.3em")
+      .text(function (d) {
+      return d.name;})
+      .style('font-size', '16px')
+;
 
     // Add the mouse line
     var mouseG = {{ chart[1] }}.append("g")
@@ -245,6 +218,7 @@ var currencies = color.domain().map(function (name) {
     mouseG.append('svg:rect')
       .attr('width', width)
       .attr('height', height)
+<!--.attr("viewBox", "0 0 960 400")-->
       .attr('fill', 'none')
       .attr('pointer-events', 'all')
       .on('mouseout', function () { // on mouse out hide line, circles and text
@@ -285,7 +259,8 @@ var currencies = color.domain().map(function (name) {
             return "translate(" + x(d.values[idx].date) + "," + y(d.values[idx].worth) + ")";
           });
       });
-var move_x = 0.02
+
+        var move_x = 0.02
         var move_y = 0.04
 
 

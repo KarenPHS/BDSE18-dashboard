@@ -109,8 +109,11 @@ path {
     max-width: 100px;
     text-align: center;
 }
+#sidebar .sidebar-header h3.mt-3 {
+    display: inline;
+}
 
-#sidebar.active .sidebar-header h3,
+#sidebar.active .sidebar-header h3.mt-3,
 #sidebar.active .CTAs {
     display: none;
 }

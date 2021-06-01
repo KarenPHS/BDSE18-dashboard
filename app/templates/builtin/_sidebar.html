@@ -2,7 +2,7 @@
 
 <nav id="sidebar">
     <div class="sidebar-header">
-        <h3>財務預警</h3>
+        <a href="{{ url_for('index') }}"><i class="fas fa-home mr-1" style='font-size:40px'></i><h3 class="mt-3">財務預警</h3></a>
     </div>
 
     <ul class="list-unstyled components" id="for_send_stocks">
@@ -14,10 +14,10 @@
                 </span></a>
             <ul class="collapse list-unstyled" id="Asset">
                 <li>
-                    <a href="{{ url_for('liquidity') }}" id="liquidity">流動性</a>
+                    <a href="{{ url_for('current_liab_current_assets') }}" id="current_liab_current_assets">流動負債佔流動資產比</a>
                 </li>
                 <li>
-                    <a href="{{ url_for('efficiency') }}" id="efficiency">效率性</a>
+                    <a href="{{ url_for('l17') }}" id="efficiency">每人營業利益</a>
                 </li>
             </ul>
         </li>
@@ -30,9 +30,32 @@
                 </span></a>
             <ul class="collapse list-unstyled" id="Sales">
                 <li>
-                    <a href="{{ url_for('profitability') }}" id="profitability">獲利性</a>
+                    <a href="{{ url_for('Operating_margin') }}" id="Operating_margin">營業利益率</a>
                 </li>
-
+                <li>
+                    <a href="{{ url_for('earning_before_tax_margin') }}" id="earning_before_tax_margin">稅前淨利率</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('Net_Asset_Value_per_Share_F') }}" id="Net_Asset_Value_per_Share_F">每股淨值(元)</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('l3') }}" id="l3">每股營業利益(元)</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('l4') }}" id="l4">每股稅前淨利(元)</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('net_income_change_rate') }}" id="net_income_change_rate">淨利變動率</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('Retained_earnings_assets') }}" id="Retained_earnings_assets">保留盈餘佔總資產比</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('Income_Before_Tax_and_Interests_assets') }}" id="Income_Before_Tax_and_Interests_assets">稅前息前盈餘佔總資產比</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('negative_two_years') }}" id="negative_two_years">兩年淨利是否為負</a>
+                </li>
             </ul>
         </li>
 
@@ -44,7 +67,16 @@
                 </span></a>
             <ul class="collapse list-unstyled" id="Business">
                 <li>
-                    <a href="{{ url_for('safety') }}" id="safety">安全性</a>
+                    <a href="{{ url_for('debt_ratio') }}" id="debt_ratio">負債比率</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('Interest_Coverage_Ratio') }}" id="Interest_Coverage_Ratio">利息保障倍數</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('ration_of_interest_expense') }}" id="ration_of_interest_expense">利息支出率</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('Debt_Equity_Ratio') }}" id="Debt_Equity_Ratio">債益比率</a>
                 </li>
 
             </ul>
@@ -58,8 +90,9 @@
                 </span></a>
             <ul class="collapse list-unstyled" id="Culture">
                 <li>
-                    <a href="{{ url_for('related_party_transaction') }}" id="related_party_transaction">關係人交易</a>
+                    <a href="{{ url_for('i69') }}" id="i69">關係人交易</a>
                 </li>
+
 
             </ul>
         </li>
