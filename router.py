@@ -1,11 +1,9 @@
-from flask import url_for
 import json
 import pandas as pd
 from app import db
 from app import app
 from app.views.finance import views
 from flask import request
-from flask import jsonify
 from app.models.StockList import stocklist, bankruptcy_stocklist
 
 websites = views()
@@ -50,6 +48,8 @@ def stocks():
 
     global stock_ids_cache
     if stock_ids == stock_ids_cache:
+        return "success"
+    elif not stock_ids:
         return "success"
     else:
         stock_ids_cache = stock_ids
@@ -165,4 +165,4 @@ def i69():
 
 if __name__ == "__main__":
     app.config['JSON_AS_ASCII'] = False
-    app.run()
+    app.run(host='0.0.0.0', port=5000)

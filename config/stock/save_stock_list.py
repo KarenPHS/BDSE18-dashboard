@@ -87,8 +87,8 @@ Write df data to newly create mysql table
 def df_to_mysql(df, engine, tbl_name):
     df.to_sql(tbl_name, engine, if_exists='replace')
 
-if __name__ == '__main__':
-    engine = mysql_engine('root','0936615983','127.0.0.1','3306','finance')
-    df_to_mysql(new_df, engine, 'stock_list')
+# if __name__ == '__main__':
+#     engine = mysql_engine('','','127.0.0.1','3306','finance')
+#     df_to_mysql(new_df, engine, 'stock_list')
 
 
