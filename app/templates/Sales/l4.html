@@ -15,7 +15,7 @@
 {% block page_inner_js %}
 <!--  全域變數-->
 <script>
-      var margin = { top: 80, right: 100, bottom: 80, left: 60 },      width = 960 - margin.left - margin.right,
+      var margin = { top: 80, right: 200, bottom: 80, left: 60 },      width = 960 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
       var data={{ data|safe }}
 </script>
@@ -35,7 +35,7 @@ var {{ chart[1] }}= d3.select("#" + "{{ chart[0] }}").append("svg")
     .attr('y', 0 - (margin.top / 3))
     .attr('text-anchor', 'middle')
     .style('font-size', '20px')
-    .text('每股稅前淨利(元)')
+    .text('每股稅前淨利')
     .attr("transform", "translate(0, -30)");
 
   // Function to convert a string into a time
@@ -130,9 +130,9 @@ var currencies = color.domain().map(function (name) {
       .attr("transform", "translate(0,-25)")
       .attr("y", 6)
       .attr("dy", "-.5em")
-      .attr("dx", "6.3em")
+      .attr("dx", ".5em")
       .style("text-anchor", "end")
-      .text("每股稅前淨利(元)");
+      .text("(元)");
 
     // Draw the lines
     var company = {{ chart[1] }}.selectAll(".company")

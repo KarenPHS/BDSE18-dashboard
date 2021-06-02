@@ -58,6 +58,11 @@ def stocks():
     sql_cmd += "company=\"{}\";".format(stock_ids[-1])
     df = pd.read_sql_query(sql_cmd, db.engine)
 
+    # *100%
+    df['Retained_earnings_assets']=df['Retained_earnings_assets']*100
+    df['Income_Before_Tax_and_Interests_assets']=df['Income_Before_Tax_and_Interests_assets']*100
+    df['current_liab_current_assets']=df['current_liab_current_assets']*100
+
     # sort data by time
     df['datetime'] = pd.to_datetime(df['time_q'], format="%Y/%m")
     df.sort_values(by=['datetime'], inplace=True, ascending=True)
@@ -65,16 +70,32 @@ def stocks():
 
     for type in ["Retained_earnings_assets","negative_two_years","earning_before_tax_margin","Income_Before_Tax_and_Interests_assets","Operating_margin","Debt_Equity_Ratio","Net_Asset_Value_per_Share_F","ration_of_interest_expense","l4","i69","net_income_change_rate","l3","l17","Interest_Coverage_Ratio","current_liab_current_assets","debt_ratio"]:
         return_data = dict()
-        for idx, row in df.iterrows():
-            abbr = row.get("abbr")
-            time = row.get("time_q")
-            value = row.get(type)
-            if time not in return_data:
-                return_data[time] = dict()
-            return_data[time]["Time"] = time
-            return_data[time][abbr] = value
+        if type == "negative_two_years":
+            for idx, row in df.iterrows():
+                abbr = row.get("abbr")
+                time = row.get("time_q")
+                value = row.get(type)
+                if time not in return_data:
+                    return_data[time] = dict()
+                if "values" not in return_data[time]:
+                    return_data[time]["values"] = list()
+                if "categorie" not in return_data[time]:
+                    return_data[time]["categorie"] = time
+
+                return_data[time]["values"].append({
+                    "value": value,
+                    "rate": abbr
+                })
+        else:
+            for idx, row in df.iterrows():
+                abbr = row.get("abbr")
+                time = row.get("time_q")
+                value = row.get(type)
+                if time not in return_data:
+                    return_data[time] = dict()
+                return_data[time]["Time"] = time
+                return_data[time][abbr] = value
         globals()[type] = json.dumps(list(return_data.values()),ensure_ascii=False)
-    print(Retained_earnings_assets)
     return "success"
 
 @app.route('/Asset/current_liab_current_assets', methods=['GET'])

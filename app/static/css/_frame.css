@@ -58,10 +58,40 @@ i,
 span {
     display: inline-block;
 }
+
+/* 捲軸 */
+.scrollbar {
+  max-height:300px;
+  overflow-y: scroll;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #7386D5;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #5A5AAD;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #484891;
+}
 /* ---------------------------------------------------
     D3.js STYLE
 ----------------------------------------------------- */
-path {
+    .x.axis path {
+        display: none;
+    }
+
+    path {
       stroke-width: 1;
       fill: none;
       stroke-linejoin: round;
@@ -86,6 +116,7 @@ path {
       font-size: x-small;
       background-color: white;
     }
+
 
 /* ---------------------------------------------------
     SIDEBAR STYLE

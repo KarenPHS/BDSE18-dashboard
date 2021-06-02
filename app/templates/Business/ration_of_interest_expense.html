@@ -15,7 +15,7 @@
 {% block page_inner_js %}
 <!--  全域變數-->
 <script>
-      var margin = { top: 80, right: 100, bottom: 80, left: 60 },
+      var margin = { top: 80, right: 200, bottom: 80, left: 60 },
       width = 960 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
       var data={{ data|safe }}
@@ -131,9 +131,9 @@ var currencies = color.domain().map(function (name) {
       .attr("transform", "translate(0,-25)")
       .attr("y", 6)
       .attr("dy", "-.5em")
-      .attr("dx", "2em")
+      .attr("dx", ".5em")
       .style("text-anchor", "end")
-      .text("利息支出率");
+      .text("(%)");
 
     // Draw the lines
     var company = {{ chart[1] }}.selectAll(".company")

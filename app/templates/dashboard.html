@@ -35,7 +35,7 @@
                             <li class="nav-item">
                                 <a aria-controls="collapseFailCompany" aria-expanded="false" class="nav-link mt-1"
                                    data-parent="#accordion" data-target="#collapseFailCompany" data-toggle="collapse"
-                                   id="fast_list">危機快篩</a>
+                                   id="fast_list">異常快篩</a>
                             </li>
 
                             <li class="nav-item">
@@ -58,7 +58,7 @@
             {% set bankruptcy_temp=[] %}
             <div class="collapse list-unstyled" data-parent="#compamy_all_list" data-toggle="collapse"
                  id="collapseFailCompany">
-                <p class="mb-0"><strong>危機公司</strong></p>
+                <p class="mb-0"><strong>異常公司</strong></p>
                 {% for record in bankruptcy_stocklist %}
                 {% if record[0] not in bankruptcy_temp %}
                 <p class="p-navbar mb-0 pt-2">{{ record[0] }}</p>
@@ -96,6 +96,9 @@
         </div>
 
         {% block page_inner %}
+        <div class="d-flex justify-content-center mbp-0">
+            <img src="{{url_for('static', filename='Word Art.png')}}" width="50%">
+        </div>
         {% endblock page_inner %}
     </div>
 
@@ -170,7 +173,6 @@ $(document).ready(function() {
 });
 
 <!--Values from  navbar slct_stock use ajax to pass values-->
-console.log(slct_stock)
 $(function(){
 var stocks = {"slct_stock":slct_stock}
 	$('#for_send_stocks').click(function(){
@@ -197,6 +199,30 @@ $(document).ready(function () {
                 $('#sidebar').toggleClass('active');
             });
         });
+
+
+<!--內容顯示控制-->
+$("nav.navbar").click(function() {
+    $(document).ready(function(){
+        if ($("#fast_list").attr('aria-expanded') == 'false') {
+            if ($("#all_list").attr('aria-expanded') == 'false') {
+                $("svg").show();
+                $("img").show();
+            } else if ($("#all_list").attr('aria-expanded') == 'true') {
+                $("svg").hide();
+                $("img").hide();
+            }
+          }else{
+            if ($("#all_list").attr('aria-expanded') == 'false') {
+                $("svg").hide();
+                $("img").hide();
+            } else if ($("#all_list").attr('aria-expanded') == 'true') {
+                $("svg").hide();
+                $("img").hide();
+            }
+        }
+    });
+});
     </script>
 
 </div>
