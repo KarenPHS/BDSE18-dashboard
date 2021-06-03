@@ -1,0 +1,38 @@
+version: "3.7"
+services: 
+  mysql-db:
+    container_name: mysql
+    build:
+      context: ./db
+    image: uopsdod/mysql-db-01
+    ports: 
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    networks:
+      my-bridge:
+    volumes:
+      - db-data:/var/lib/mysql
+    restart: always
+  flask-app:
+    container_name: myapp
+    build:
+      context: .
+    image: uopsdod/java-app-01
+    ports:
+      - "8080:8080"
+    command: ./wait-for-it.sh mydb:3306 -- java -jar target/accessing-data-mysql-0.0.1-SNAPSHOT.jar 
+    environment:
+      - DB_HOST_IP=mysql
+    networks:
+      my-bridge:
+
+networks:
+  my-bridge:
+
+volumes:
+  db-data:
+
